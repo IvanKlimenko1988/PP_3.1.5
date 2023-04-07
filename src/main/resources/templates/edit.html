@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+</head>
+<body>
+<form action="#" th:action="@{/users/user-update}" th:object="${user}" method="post">
+    <label for="id">ID</label>
+    <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
+    <br/>
+    <label for="name">Enter name: </label>
+    <input type="text" class="form-control" id="name" th:field="*{name}" th:value="*{getName()}" placeholder="Enter user name">
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+    <br/>
+    <label for=surname>Enter surname: </label>
+    <input type="text" class="form-control" id="surname" th:field="*{surname}" th:value="*{getSurname()}" placeholder="Enter surname">
+    <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error</div>
+    <br/>
+    <label for="age">Enter age: </label>
+    <input type="text" class="form-control" id="age" th:field="*{age}" th:value="*{getAge()}" placeholder="Enter age">
+    <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
+    <br/>
+    <label for="email">Enter email: </label>
+    <input type="text" class="form-control" id="email" th:field="*{email}" th:value="*{getEmail()}" placeholder="Enter email" required>
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+    <br/>
+    <input type="submit" value="Update"/>
+</form>
+
+</body>
+</html>
