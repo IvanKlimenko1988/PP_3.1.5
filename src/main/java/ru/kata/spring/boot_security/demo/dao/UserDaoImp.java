@@ -29,7 +29,7 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         User user = getById(id);
         if (null == user) {
             throw new NullPointerException("User not found");
@@ -46,7 +46,11 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(Long id) {
         return entityManager.find(User.class, id);
+    }
+
+    public User findByUsername(String name) {
+        return entityManager.find(User.class, name);
     }
 }
