@@ -2,7 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 
 
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -15,4 +15,7 @@ public interface UserService extends UserDetailsService {
     void edit(User user);
     User getById(Long id);
     User findByUsername(String name);
+
+
+
 }

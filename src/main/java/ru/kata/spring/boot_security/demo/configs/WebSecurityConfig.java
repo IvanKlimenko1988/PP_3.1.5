@@ -18,12 +18,8 @@ import javax.sql.DataSource;
 
 //@Configuration
 //@EnableWebSecurity
-//public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//    private final SuccessUserHandler successUserHandler;
-//
-//    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
-//        this.successUserHandler = successUserHandler;
-//    }
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
 //
 //    private UserService userService;
 //
@@ -49,14 +45,14 @@ import javax.sql.DataSource;
 //                .permitAll();
 //    }
 
-    //     аутентификация inMemory
+         //аутентификация inMemory
 //    @Bean
 //    @Override
 //    public UserDetailsService userDetailsService() {
 //        UserDetails user =
 //                User.withDefaultPasswordEncoder()
 //                        .username("user")
-//                        .password("user")
+//                         .password("user")
 //                        .roles("USER")
 //                        .build();
 //        UserDetails admin =
@@ -95,5 +91,5 @@ import javax.sql.DataSource;
 //        authenticationProvider.setUserDetailsService(userService);
 //        return authenticationProvider;
 //    }
-//}
+}
 

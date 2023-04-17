@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<h2>User info</h2>
+<br>
+
+<form th:method="POST" th:action="@{/auth/user-info}" th:object="${user}">
+    <div>
+        <label for="username">Введите имя пользователя: </label>
+        <input type="text" th:field="*{username}" id="username"/>
+<!--        <input type="text" class="form-control" id="name" th:field="*{name}" th:value="*{getName()}"-->
+<!--               placeholder="Enter user name" required>-->
+        <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</div>
+        <br/>
+        <label for=surname>Введите фамилию: </label>
+<!--        <input type="text" class="form-control" id="surname" th:field="*{surname}" th:value="*{getSurname()}"-->
+<!--               placeholder="Enter surname" required>-->
+        <input type="text" th:field="*{surname}" id="surname"/>
+        <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error</div>
+        <br/>
+        <label for="age">Введите год рождения: </label>
+<!--        <input type="text" class="form-control" id="age" th:field="*{age}" th:value="*{getAge()}"-->
+<!--               placeholder="Enter age" required>-->
+        <input type="text" th:field="*{age}" id="age"/>
+        <div style="color: red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age error</div>
+        <br/>
+        <label for="email">Введите почтовый адрес: </label>
+<!--        <input type="text" class="form-control" id="email" th:field="*{email}" th:value="*{getEmail()}"-->
+<!--               placeholder="Enter email" required>-->
+        <input type="text" th:field="*{email}" id="email"/>
+        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>
+        <br/>
+        <label for="password">Введите пароль: </label>
+        <input type="text" th:field="*{password}" id="password"/>
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
+        <br/>
+        <input type="submit" value="Add User"/>
+    </div>
+</form>
+
+</body>
+</html>

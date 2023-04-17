@@ -1,17 +1,22 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -35,8 +40,11 @@ public class User {
 
     @Column(name = "password")
     @NotEmpty(message = "Пароль не должен быть пустым")
-    @Size(min = 4, max = 10, message = "Пароль должен быть от 4 до 10 символов")
+    @Size(min = 4, max = 255, message = "Пароль должен быть от 4 до 10 символов")
     private String password;
+//    @Column
+//    @NotEmpty
+//    private boolean enabled;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
@@ -67,7 +75,27 @@ public class User {
         return username;
     }
 
-    public void setName(String name) {
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    public void setUsername(String name) {
         this.username = name;
     }
 
@@ -95,6 +123,11 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -106,6 +139,11 @@ public class User {
     public Collection<Role> getRoles() {
         return roles;
     }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
 
     @Override
     public boolean equals(Object o) {
