@@ -2,22 +2,27 @@ package ru.kata.spring.boot_security.demo.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class UserDetailsImp implements org.springframework.security.core.userdetails.UserDetails {
+public class UserDetailsImp implements UserDetails {
 
-    private User user;
+    private final User user;
+
+    public UserDetailsImp(User user) {
+        this.user = user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<Role> roles = user.getRoles();
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+        return this.user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
     }
 
     @Override
@@ -28,6 +33,11 @@ public class UserDetailsImp implements org.springframework.security.core.userdet
     @Override
     public String getUsername() {
         return this.user.getUsername();
+    }
+
+    //Нужно для получения данных аутентифицированного пользователя
+    public User getUser() {
+        return this.user;
     }
 
     @Override
@@ -50,8 +60,4 @@ public class UserDetailsImp implements org.springframework.security.core.userdet
         return true;
     }
 
-    //Нужно для получения данных аутентифицированного пользователя
-    public User getUser() {
-        return this.user;
-    }
 }

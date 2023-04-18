@@ -1,18 +1,24 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.security.UserDetailsImp;
-import ru.kata.spring.boot_security.demo.service.UserDetailsService;
 
-import java.util.Collection;
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.ModelAndView;
+import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.security.UserDetailsImp;
+
 import java.util.List;
+import java.util.Scanner;
+
 
 @Controller
 //@RequestMapping("/users")
@@ -20,25 +26,24 @@ public class UsersController {
 
     @GetMapping("/showUserInfo")
     public String showUserInfo() {
-
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserDetailsImp userDetailsImp = (UserDetailsImp) authentication.getPrincipal();
+        System.out.println(userDetailsImp.getUser());
 
 //        UserDetailsService userDetailsService = (UserDetailsService) authentication.getPrincipal();
-//        User user = userDetailsService.loadUserByUsername(authentication.)
+//        User user =   userDetailsService.loadUserByUsername(authentication.)
 //        UserDetailsImp userDetailsImp = (UserDetailsImp)authentication.getPrincipal();
 //        UserDetailsImp userDetailsImp = ()
 
-        System.out.println(userDetails.getUsername() + " " + userDetails.getPassword());
+//        System.out.println(userDetails.getUsername() + " " + userDetails.getPassword());
 //        System.out.println(userDetailsService.loadUserByUsername() + " " + userDetailsImp.getUser().getEmail());
         return "hello";
     }
 
-    @GetMapping("/admin")
-    public String adminPage() {
-        return "admin";
     }
+
+
+
 
 
 //    private UserService userService;
@@ -100,4 +105,4 @@ public class UsersController {
 //        return "secured part of web service: " + user.getUsername() + " "
 //                + user.getEmail();
 //    }
-}
+
