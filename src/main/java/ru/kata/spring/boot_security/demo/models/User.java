@@ -6,10 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -28,7 +25,7 @@ public class User {
     @Size(min = 2, max = 30, message = "Фамилия должна быть длиной от 2 до 30 символов")
     private String surname;
     @Column(name = "age")
-    @Min(value = 0, message = "Возраст не должен быть меньше нуля")
+    @Min(value = 1900, message = "Год не должен быть меньше 1900")
     private int age;
     @Column(name = "email")
     @NotEmpty(message = "Почта не должна быть пустой")
@@ -44,7 +41,7 @@ public class User {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
@@ -105,12 +102,15 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
-
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class User {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-//                ", roles=" + roles +
+                ", roles=" + roles +
                 '}';
     }
 }

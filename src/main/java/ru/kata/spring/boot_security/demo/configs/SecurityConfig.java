@@ -13,13 +13,11 @@ import ru.kata.spring.boot_security.demo.services.UsersDetailsService;
 @EnableWebSecurity()
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //    private final SuccessUserHandler successUserHandler;
     private final UsersDetailsService usersDetailsService;
 
     @Autowired
     public SecurityConfig(UsersDetailsService usersDetailsService) {
         this.usersDetailsService = usersDetailsService;
-//        this.successUserHandler = successUserHandler;
     }
 
     @Override
@@ -35,24 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //конфигурируем сам Spring Security
-        //конфигурируем авторизацию
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/users/user_info").hasRole("USER")
                 .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
-//                .anyRequest().authenticated()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
-//                .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
-//                .successHandler(successUserHandler)
                 .defaultSuccessUrl("/hello", true)
                 .failureUrl("/auth/login?error")
                 .and()
                 .logout().logoutUrl("/logout")
                 .logoutSuccessUrl("/auth/login");
     }
-
-
 }

@@ -19,13 +19,11 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserRegistrationService userRegistrationService;
-    private final RoleRepository roleRepository;
     private final UserValidator userValidator;
 
-
-    public AuthController(UserRegistrationService userRegistrationService, RoleRepository roleRepository, UserValidator userValidator) {
+    @Autowired
+    public AuthController(UserRegistrationService userRegistrationService, UserValidator userValidator) {
         this.userRegistrationService = userRegistrationService;
-        this.roleRepository = roleRepository;
         this.userValidator = userValidator;
     }
 
@@ -36,7 +34,7 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public String getRegistrationPage(@ModelAttribute("user") User user) {
+    public String getRegistrationPage() {
         return "auth/registration";
     }
 

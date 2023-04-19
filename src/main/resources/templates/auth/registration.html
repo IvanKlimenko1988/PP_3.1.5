@@ -7,7 +7,6 @@
 <body>
 <h2>Данные нового пользователя</h2>
 <br>
-
 <form th:method="post" th:action="@{/auth/registration}" th:object="${user}">
     <div>
         <label for="username">Введите имя пользователя: </label>
@@ -28,24 +27,10 @@
         <br/>
         <label for="password">Введите пароль: </label>
         <input type="text" th:field="*{password}" id="password"/>
-        <p>
-            <label>Roles:
-                <input type="checkbox" name="roles"
-                       th:each="role : ${allRoles}"
-                       th:text="${role.name}"
-                       th:value="${role.id}"/>
-<!--                       th:field="*{roles}"-->
-            </label>
-        </p>
-
         <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
         <br/>
-
         <input type="submit" value="Добавить"/>
     </div>
 </form>
-
-
-
 </body>
 </html>

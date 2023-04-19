@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
@@ -15,20 +16,12 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.security.UserDetailsImp;
 
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class UsersDetailsService implements UserDetailsService {
-
-    @PersistenceContext
-    private EntityManager em;
-
 
     private final RoleRepository roleRepository;
 
@@ -48,36 +41,26 @@ public class UsersDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Пользователь не найден");
         }
         return new UserDetailsImp(user.get());
-
-        }
-//        return new org.springframework.security.core.userdetails.User(user.get().getUsername(),
-//                user.get().getPassword(), mapRolesToAuthorities(user.get().getRoles()));
-
-
-//    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-//        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-//    }
-
-    public User findUserById(Long userId) {
-        Optional<User> userFromDb = userRepository.findById(userId);
-        return userFromDb.orElse(new User());
     }
 
-    public List<User> allUsers() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public boolean deleteUser(Long userId) {
-        if (userRepository.findById(userId).isPresent()) {
-            userRepository.deleteById(userId);
+    public boolean deleteUser(Long id) {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public List<User> usergtList(Long idMin) {
-        return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
-                .setParameter("paramId", idMin).getResultList();
+    public User findById(Long id) {
+        return userRepository.findById(id).get();
+    }
+
+    public List<Role> listRoles() {
+        return roleRepository.findAll();
     }
 
 }
