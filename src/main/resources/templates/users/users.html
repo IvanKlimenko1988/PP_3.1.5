@@ -49,10 +49,8 @@
     </div>
 </div>
 <br><br>
-<form th:action="@{/auth/registration}" th:method="POST">
-    <input type="submit" value="Добавить пользователя"/>
-</form>
-<br><br>
+<input th:type="button" th:value="Add"
+       onclick="window.location.href = '/admin/add'"/>
 <form th:action="@{/logout}" th:method="POST">
     <input type="submit" value="Выход"/>
 </form>

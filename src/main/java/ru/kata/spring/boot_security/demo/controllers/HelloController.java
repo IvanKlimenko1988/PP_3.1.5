@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HelloController {
     @GetMapping("/hello")
-    public String helloPage() {
+    public String getHelloPage() {
         return "/hello";
     }
 
     @GetMapping("/goodbye")
-    public String goodByePage() {
+    public String getGoodbyePage() {
         return "goodbye";
     }
 }

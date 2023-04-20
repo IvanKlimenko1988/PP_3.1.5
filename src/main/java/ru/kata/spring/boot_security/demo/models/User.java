@@ -37,21 +37,13 @@ public class User {
     @Size(min = 4, max = 255, message = "Пароль должен быть от 4 до 10 символов")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
-    }
-
-    public User(String name, String surname, int age, String email, String password) {
-        this.username = name;
-        this.surname = surname;
-        this.age = age;
-        this.email = email;
-        this.password = password;
     }
 
     public Long getId() {
@@ -102,10 +94,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
-    public void setRoles(List<Role> roles) {
+
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -118,12 +111,17 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(username, user.username) && Objects.equals(surname, user.surname);
+        return age == user.age && Objects.equals(id, user.id)
+                && Objects.equals(username, user.username)
+                && Objects.equals(surname, user.surname)
+                && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password)
+                && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, surname, age, email);
+        return Objects.hash(id, username, surname, age, email, password, roles);
     }
 
     @Override
