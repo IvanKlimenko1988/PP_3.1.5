@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
+
+<meta charset="UTF-8">
+<title>Create user</title>
 </head>
 <body>
 <h2>Данные нового пользователя</h2>
 <br>
-<form th:method="post" th:action="@{/users/user_add}" th:object="${user}">
+
+<form th:method="POST" th:action="@{/admin}" th:object="${user}">
     <div>
         <label for="username">Введите имя пользователя: </label>
         <input type="text" th:field="*{username}" id="username"/>

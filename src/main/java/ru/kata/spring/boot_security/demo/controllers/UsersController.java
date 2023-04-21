@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
-import ru.kata.spring.boot_security.demo.services.UsersDetailsService;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 @Controller
 @RequestMapping("/user")
 public class UsersController {
-    private final UsersDetailsService usersDetailsService;
+    private final UserService userService;
 
     @Autowired
-    public UsersController(UsersDetailsService usersDetailsService) {
-        this.usersDetailsService = usersDetailsService;
+    public UsersController(UserService userService) {
+        this.userService = userService;
     }
 
 
@@ -37,7 +37,7 @@ public class UsersController {
 
     @GetMapping("/user-info/{id}")
     public String getUserPage(@PathVariable("id") Long id, Model model) {
-        User user = usersDetailsService.findById(id);
+        User user = userService.findById(id);
         model.addAttribute("user", user);
         return "/users/user_info";
     }

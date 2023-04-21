@@ -10,8 +10,4 @@ public class HelloController {
         return "/hello";
     }
 
-    @GetMapping("/goodbye")
-    public String getGoodbyePage() {
-        return "goodbye";
-    }
 }

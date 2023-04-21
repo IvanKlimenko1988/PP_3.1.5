@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.models.Role;
+import ru.kata.spring.boot_security.demo.models.RoleImpl;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.UserRegistrationService;
+import ru.kata.spring.boot_security.demo.services.UserService;
 import ru.kata.spring.boot_security.demo.services.UsersDetailsService;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
@@ -19,15 +19,18 @@ import java.util.List;
 public class AdminsController {
 
     private final UsersDetailsService usersDetailsService;
-    private final UserRegistrationService userRegistrationService;
+
+    private final UserService userService;
 
     private final UserValidator userValidator;
 
     @Autowired
-    public AdminsController(UsersDetailsService usersDetailsService, UserRegistrationService userRegistrationService, UserValidator userValidator) {
+    public AdminsController(UsersDetailsService usersDetailsService,
+                            UserValidator userValidator,
+                            UserService userService) {
         this.usersDetailsService = usersDetailsService;
-        this.userRegistrationService = userRegistrationService;
         this.userValidator = userValidator;
+        this.userService = userService;
     }
 
     @GetMapping("")
@@ -36,53 +39,42 @@ public class AdminsController {
     }
 
     @GetMapping("/add")
-    public String getUserForm() {
+    public String getUserForm(Model model) {
+        model.addAttribute("user", new User());
         return "users/user_add";
     }
 
-    @PostMapping("/addForm")
-    public String saveUserForm(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        userValidator.validate(user, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "users/user_add";
-        }
-        usersDetailsService.addUser(user);
-        return "redirect:auth/login";
+    @PostMapping()
+    public String createUser(@ModelAttribute("user") User user) {
+        userService.addUser(user);
+        return "redirect:/admin";
     }
-//    @PostMapping("/addForm")
-//    public String saveRegistrationForm(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-//        userValidator.validate(user, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            return "users/user_add";
-//        }
-//        userRegistrationService.registrationUser(user);
-//        return "redirect:/admin";
-//    }
 
     @GetMapping("/users")
     public String getListUsers(Model model) {
-        List<User> listUsers = usersDetailsService.findAll();
+        List<User> listUsers = userService.findAll();
         model.addAttribute("listUsers", listUsers);
         return "users/users";
     }
 
     @GetMapping("edit/{id}")
     public String editUser(@PathVariable("id") Long id, Model model) {
-        User user = usersDetailsService.findById(id);
-        List<Role> listRoles = usersDetailsService.getRoles();
+        User user = userService.findById(id);
+        List<RoleImpl> listRoles = userService.getRoles();
         model.addAttribute("user", user);
         model.addAttribute("listRoles", listRoles);
         return "users/user_form";
     }
+
     @GetMapping("delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        usersDetailsService.deleteUser(id);
+        userService.deleteUser(id);
         return "redirect:/admin/users";
     }
 
     @PostMapping("/users/update")
-    public String saveUser(User user) {
-        userRegistrationService.update(user);
+    public String updateUser(User user) {
+        userService.updateUser(user);
         return "redirect:/admin/users";
     }
 

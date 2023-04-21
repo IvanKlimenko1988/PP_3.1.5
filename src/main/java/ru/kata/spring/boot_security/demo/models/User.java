@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.models;
 
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -37,13 +39,28 @@ public class User {
     @Size(min = 4, max = 255, message = "Пароль должен быть от 4 до 10 символов")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+    org.hibernate.annotations.CascadeType.PERSIST,
+    org.hibernate.annotations.CascadeType.MERGE})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleImpl> roles;
 
     public User() {
+    }
+
+    public User(String username, String surname,
+                int age, String email,
+                String password,
+                RoleImpl roles) {
+        this.username = username;
+        this.surname = surname;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        addRole(roles);
     }
 
     public Long getId() {
@@ -94,15 +111,18 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Set<RoleImpl> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<RoleImpl> roles) {
         this.roles = roles;
     }
 
-    public void addRole(Role role) {
+    public void addRole(RoleImpl role) {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
         this.roles.add(role);
     }
 
