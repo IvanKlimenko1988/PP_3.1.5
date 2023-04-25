@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
@@ -17,25 +15,18 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
-
-
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository
-            , RoleRepository roleRepository) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder,
+                           UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
     @Transactional
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role roleUser = roleRepository.findByName("ROLE_USER");
-        user.addRole(roleUser);
         userRepository.save(user);
-
     }
 
     @Override
@@ -65,9 +56,4 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Role> getRoles() {
-        return roleRepository.findAll();
-    }
 }

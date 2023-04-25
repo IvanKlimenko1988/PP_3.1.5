@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class RoleServiseImpl implements RoleService {
     private final RoleRepository roleRepository;
+
     @Autowired
     public RoleServiseImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
@@ -21,4 +22,5 @@ public class RoleServiseImpl implements RoleService {
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
+
 }
