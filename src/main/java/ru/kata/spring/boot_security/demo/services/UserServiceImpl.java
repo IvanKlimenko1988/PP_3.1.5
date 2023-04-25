@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.RoleImpl;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        RoleImpl roleUser = roleRepository.findByName("ROLE_USER");
+        Role roleUser = roleRepository.findByName("ROLE_USER");
         user.addRole(roleUser);
         userRepository.save(user);
 
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoleImpl> getRoles() {
+    public List<Role> getRoles() {
         return roleRepository.findAll();
     }
 }

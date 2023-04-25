@@ -5,11 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "roles")
-public class RoleImpl implements GrantedAuthority {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -17,19 +18,22 @@ public class RoleImpl implements GrantedAuthority {
     @Column(name = "name")
     @NotEmpty
     private String name;
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
+    private Set<User> users;
 
-    public RoleImpl() {
+
+    public Role() {
     }
 
-    public RoleImpl(Long id) {
+    public Role(Long id) {
         this.id = id;
     }
 
-    public RoleImpl(String name) {
+    public Role(String name) {
         this.name = name;
     }
 
-    public RoleImpl(Long id, String name) {
+    public Role(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -49,16 +53,12 @@ public class RoleImpl implements GrantedAuthority {
     public void setName(String name) {
         this.name = name;
     }
-    @Override
-    public String getAuthority() {
-        return name;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RoleImpl role = (RoleImpl) o;
+        Role role = (Role) o;
         return Objects.equals(id, role.id) && Objects.equals(name, role.name);
     }
 

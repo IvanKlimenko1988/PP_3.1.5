@@ -39,14 +39,19 @@ public class User {
     @Size(min = 4, max = 255, message = "Пароль должен быть от 4 до 10 символов")
     private String password;
 
-    @ManyToMany()
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-    org.hibernate.annotations.CascadeType.PERSIST,
-    org.hibernate.annotations.CascadeType.MERGE})
+//    @ManyToMany()
+//    @Cascade({
+//    org.hibernate.annotations.CascadeType.PERSIST,
+//    org.hibernate.annotations.CascadeType.MERGE},)
+//    @JoinTable(name = "users_roles",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id"))
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<RoleImpl> roles;
+    private Set<Role> roles;
 
     public User() {
     }
@@ -54,7 +59,7 @@ public class User {
     public User(String username, String surname,
                 int age, String email,
                 String password,
-                RoleImpl roles) {
+                Role roles) {
         this.username = username;
         this.surname = surname;
         this.age = age;
@@ -111,15 +116,15 @@ public class User {
         this.password = password;
     }
 
-    public Set<RoleImpl> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<RoleImpl> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public void addRole(RoleImpl role) {
+    public void addRole(Role role) {
         if (this.roles == null) {
             this.roles = new HashSet<>();
         }

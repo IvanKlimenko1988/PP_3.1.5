@@ -2,7 +2,7 @@ package ru.kata.spring.boot_security.demo.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.kata.spring.boot_security.demo.models.RoleImpl;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
@@ -22,10 +22,10 @@ public class DataBaseInit {
     private void postConstruct() {
         User admin = new User("admin", "admin",
                 1988, "admin@mail.ru", "admin",
-                new RoleImpl("ROLE_ADMIN"));
+                new Role("ROLE_ADMIN"));
         User user = new User("user", "user",
                 1988, "user@mail.ru", "user",
-                new RoleImpl("ROLE_USER"));
+                new Role("ROLE_USER"));
         userService.addUser(admin);
         userService.addUser(user);
     }

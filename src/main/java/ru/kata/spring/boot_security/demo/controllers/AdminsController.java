@@ -3,33 +3,23 @@ package ru.kata.spring.boot_security.demo.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.models.RoleImpl;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 import ru.kata.spring.boot_security.demo.services.UsersDetailsService;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminsController {
 
-    private final UsersDetailsService usersDetailsService;
-
     private final UserService userService;
 
-    private final UserValidator userValidator;
-
     @Autowired
-    public AdminsController(UsersDetailsService usersDetailsService,
-                            UserValidator userValidator,
-                            UserService userService) {
-        this.usersDetailsService = usersDetailsService;
-        this.userValidator = userValidator;
+    public AdminsController(UserService userService) {
         this.userService = userService;
     }
 
@@ -60,7 +50,7 @@ public class AdminsController {
     @GetMapping("edit/{id}")
     public String editUser(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
-        List<RoleImpl> listRoles = userService.getRoles();
+        List<Role> listRoles = userService.getRoles();
         model.addAttribute("user", user);
         model.addAttribute("listRoles", listRoles);
         return "users/user_form";
