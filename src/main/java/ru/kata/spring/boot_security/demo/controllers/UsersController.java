@@ -26,13 +26,13 @@ public class UsersController {
     }
 
 
-    @GetMapping("/showUserInfo")
+    @GetMapping()
     public String showUser(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetailsImp = (UserDetailsImpl) authentication.getPrincipal();
         User user = userDetailsImp.getUser();
         model.addAttribute("user", user);
-        return "users/user";
+        return "/user";
     }
 
     @GetMapping("/user-info/{id}")

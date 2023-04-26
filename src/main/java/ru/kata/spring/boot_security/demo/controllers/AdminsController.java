@@ -33,25 +33,15 @@ public class AdminsController {
         List<Role> listRoles = roleService.getAllRoles();
         model.addAttribute("listRoles", listRoles);
         List<User> listUsers = userService.findAll();
+        model.addAttribute("listUsers", listUsers);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetailsImp = (UserDetailsImpl) authentication.getPrincipal();
         User user = userDetailsImp.getUser();
         model.addAttribute("user", user);
-//        new UserDetailsImpl().getUser().getUsername();
-//        User user = userService.findById()
-//        model.addAttribute("user", user);
         return "admin";
     }
 
-    @GetMapping("/add")
-    public String getUserForm(Model model) {
-        List<Role> listRoles = roleService.getAllRoles();
-        model.addAttribute("listRoles", listRoles);
-        model.addAttribute("user", new User());
-        return "users/user_add";
-    }
-
-    @PostMapping()
+    @PostMapping("/add")
     public String createUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
         return "redirect:/admin";
