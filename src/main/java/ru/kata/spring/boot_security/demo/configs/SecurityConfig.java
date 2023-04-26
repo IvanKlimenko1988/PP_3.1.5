@@ -42,10 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/auth/login")
                 .usernameParameter("email")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/hello", true)
+                .defaultSuccessUrl("/admin", true)
                 .failureUrl("/auth/login?error")
                 .and()
-                .logout().logoutUrl("/logout")
+                .logout()
                 .logoutSuccessUrl("/auth/login");
     }
 }

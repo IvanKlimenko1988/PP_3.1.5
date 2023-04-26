@@ -8,12 +8,12 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 
 import javax.annotation.PostConstruct;
 
-@Component
+//@Component
 public class DataBaseInit {
 
     private final UserService userService;
 
-    @Autowired
+//    @Autowired
     public DataBaseInit(UserService userService) {
         this.userService = userService;
     }
