@@ -60,7 +60,7 @@ public class AdminsController {
         List<Role> listRoles = roleService.getAllRoles();
         model.addAttribute("user", user);
         model.addAttribute("listRoles", listRoles);
-        return "users/user_form";
+        return "admin";
     }
 
     @GetMapping("delete/{id}")
@@ -69,7 +69,7 @@ public class AdminsController {
         return "redirect:/admin/users";
     }
 
-    @PostMapping("/users/update")
+    @PostMapping("/edit")
     public String updateUser(User user) {
         userService.updateUser(user);
         return "redirect:/admin/users";
