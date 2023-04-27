@@ -1,11 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
@@ -41,9 +38,9 @@
 <div class="block-left">
     <div class="d-flex align-items-start">
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin
+            <button class="nav-link active btn-lg" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin
             </button>
-            <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">User
+            <button class="nav-link btn-lg" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">User
             </button>
         </div>
     </div>
@@ -86,25 +83,80 @@
                                     <td th:text="${user.age}">Age</td>
                                     <td th:text="${user.email}">E-mail</td>
                                     <td th:text="${user.roles}">Roles</td>
-<!--                                    <td th:text="${user.roles}">Roles</td>-->
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#edit">
+                                        <button type="button" class="btn btn-info" data-toggle="modal"
+                                                th:data-target="'#edit' + ${user.id}">
                                             Edit
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editModelLabel" aria-hidden="true">
+                                        <div class="modal fade" th:id="'edit' + ${user.id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModelLabel">Form egit</h5>
+                                                        <h5 class="modal-title" id="editModalLabel">Edit user</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        ...
+                                                        <form th:action="@{/admin/users/update}" th:object="${user}" method="post"
+                                                              style="max-width: 600px; margin: 0 auto;">
+                                                            <input type="hidden" th:field="*{id}"/>
+                                                            <div class="m-3">
+                                                                <div class="form-group row">
+                                                                    <label class="col-4 col-form-label">ID: </label>
+                                                                    <div class="col-8">
+                                                                        <input class="form-control" type="text" th:field="*{id}" placeholder="" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-4 col-form-label">First Name: </label>
+                                                                    <div class="col-8">
+                                                                        <input type="text" th:field="*{username}" class="form-control" required/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-4 col-form-label">Last Name: </label>
+                                                                    <div class="col-8">
+                                                                        <input type="text" th:field="*{surname}" class="form-control" required/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-4 col-form-label">Year: </label>
+                                                                    <div class="col-8">
+                                                                        <input type="text" th:field="*{age}" class="form-control" required
+                                                                               minlength="4" maxlength="4"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-4 col-form-label">Email: </label>
+                                                                    <div class="col-8">
+                                                                        <input type="email" th:field="*{email}" class="form-control" required/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-4 col-form-label">Password: </label>
+                                                                    <div class="col-8">
+                                                                        <input type="password" th:field="*{password}" class="form-control" required
+                                                                               minlength="4" maxlength="10"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-4 col-form-label">Role: </label>
+                                                                    <div class="col-8">
+                                                                        <th:block th:each="role: ${listRoles}">
+                                                                            <input type="checkbox" th:field="*{roles}"
+                                                                                   th:text="${role.name}" th:value="${role.id}" class="m-2"/>
+                                                                        </th:block>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -114,30 +166,28 @@
                                             </div>
                                         </div>
                                     </td>
-<!--                                    <td><a th:href="@{'edit/' + ${user.id}}">Edit</a></td>-->
                                     <td>
-<!--                                        <a th:href="@{'delete/' + ${user.id}}">Delete</a>-->
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete">
                                             Delete
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+                                        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle2">Modal title</h5>
+                                                        <h5 class="modal-title" id="deleteModalLabel">Delete form</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        ...
+                                                        Delete form
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                        <button type="button" class="btn btn-primary">Delete</button>
                                                     </div>
                                                 </div>
                                             </div>
