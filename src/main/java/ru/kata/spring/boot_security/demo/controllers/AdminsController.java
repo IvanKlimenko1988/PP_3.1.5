@@ -47,22 +47,6 @@ public class AdminsController {
         return "redirect:/admin";
     }
 
-//    @GetMapping("/users")
-//    public String getListUsers(Model model) {
-//        List<User> listUsers = userService.findAll();
-//        model.addAttribute("listUsers", listUsers);
-//        return "users/users";
-//    }
-
-//    @GetMapping("edit/{id}")
-//    public String editUser(@PathVariable("id") Long id, Model model) {
-//        User user = userService.findById(id);
-//        List<Role> listRoles = roleService.getAllRoles();
-//        model.addAttribute("user", user);
-//        model.addAttribute("listRoles", listRoles);
-//        return "admin";
-//    }
-
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
