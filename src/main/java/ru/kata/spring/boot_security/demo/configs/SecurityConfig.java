@@ -10,14 +10,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kata.spring.boot_security.demo.services.UsersDetailsService;
 
+
+
+
 @EnableWebSecurity()
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     private final UsersDetailsService usersDetailsService;
 
+    private final SuccessUserHandler successUserHandler;
+
     @Autowired
-    public SecurityConfig(UsersDetailsService usersDetailsService) {
+    public SecurityConfig(UsersDetailsService usersDetailsService, SuccessUserHandler successUserHandler) {
         this.usersDetailsService = usersDetailsService;
+        this.successUserHandler = successUserHandler;
     }
 
     @Override
@@ -35,14 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/users/user_info").hasRole("USER")
+                .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
-                .formLogin().loginPage("/auth/login")
+                .formLogin()
+                .successHandler(successUserHandler)
+                .loginPage("/auth/login")
                 .usernameParameter("email")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/admin", true)
                 .failureUrl("/auth/login?error")
                 .and()
                 .logout()
