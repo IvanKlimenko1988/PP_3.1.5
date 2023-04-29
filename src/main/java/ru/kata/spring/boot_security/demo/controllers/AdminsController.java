@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -29,14 +30,12 @@ public class AdminsController {
     }
 
     @GetMapping("")
-    public String getAdminPage(Model model) {
+    public String getAdminPage(Model model, Principal principal) {
         List<Role> listRoles = roleService.getAllRoles();
         model.addAttribute("listRoles", listRoles);
         List<User> listUsers = userService.findAll();
         model.addAttribute("listUsers", listUsers);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetailsImp = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userDetailsImp.getUser();
+        User user = userService.findUserByName(principal.getName());
         model.addAttribute("user", user);
         return "admin";
     }
