@@ -33,6 +33,15 @@ public class UsersController {
         return "/user";
     }
 
+    @GetMapping("/test")
+    public String showUserTest(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetailsImp = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userDetailsImp.getUser();
+        model.addAttribute("user", user);
+        return "/test";
+    }
+
 }
 
 

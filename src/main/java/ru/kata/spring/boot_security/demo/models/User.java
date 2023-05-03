@@ -1,7 +1,7 @@
 package ru.kata.spring.boot_security.demo.models;
 
 
-import org.hibernate.annotations.Cascade;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

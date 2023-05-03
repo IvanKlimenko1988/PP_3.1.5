@@ -25,6 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.successUserHandler = successUserHandler;
     }
 
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(usersDetailsService)
@@ -39,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin/**", "/user/**").hasRole("ADMIN")
+//                .antMatchers("/admin/**", "/user/**").hasRole("ADMIN")
+                .antMatchers("/admin/**", "/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/auth/login", "/auth/registration", "/error").permitAll()
@@ -55,4 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/auth/login");
     }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.httpBasic()
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/users/**").hasRole("USER")
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .and()
+//                .csrf().disable()
+//                .formLogin().disable();
+//    }
 }

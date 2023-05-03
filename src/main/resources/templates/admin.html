@@ -26,9 +26,6 @@
         <h3 class="navbar-brand col-md-3 col-lg-2 mr-0 px-3"><span th:text="${user.getEmail()}"></span>
             with roles: <span th:text="${user.getRoles()}"></span></h3>
         <ul class="navbar-nav px-3">
-            <!--            <li class="nav-item text-nowrap">-->
-            <!--                <a class="nav-link" href="/logout">Logout</a>-->
-            <!--            </li>-->
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="btn btn-dark text-secondary">Logout</button>
             </form>
@@ -202,7 +199,7 @@
                                                                                     <th:block
                                                                                             th:each="role: ${listRoles}">
                                                                                         <input type="checkbox"
-                                                                                               th:field="*{roles}"
+                                                                                               th:field="*{getRoles()}"
                                                                                                th:text="${role.name}"
                                                                                                th:value="${role.id}"
                                                                                                class="m-2"/>

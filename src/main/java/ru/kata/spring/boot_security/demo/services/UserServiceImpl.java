@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.util.UserErrorResponse;
+import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,8 +28,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addUser(User user) {
+        enrichUser(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    private void enrichUser(User user) {
+        user.setRoles(user.getRoles());
     }
 
     @Override
@@ -38,28 +46,36 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User findById(Long id) {
-        return userRepository.findById(id).get();
+        Optional<User> user = userRepository.findById(id);
+        return user.orElseThrow();
     }
+
+//    @Override
+//    @Transactional
+//    public void deleteUser(Long id) {
+//        if (userRepository.findById(id).isPresent()) {
+//            userRepository.deleteById(id);
+//        }
+//    }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-        }
+        userRepository.deleteById(id);
     }
 
     @Override
     @Transactional
-    public void updateUser(User user, Long id) {
-        User userEdit = findById(id);
+    public void updateUser(User user) {
+        Optional<User> optional = userRepository.findById(user.getId());
+        User userEdit = optional.get();
         userEdit.setUsername(user.getUsername());
         userEdit.setSurname(user.getSurname());
         userEdit.setAge(user.getAge());
         userEdit.setEmail(user.getEmail());
         userEdit.setRoles(user.getRoles());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.save(userEdit);
     }
 
     @Override
