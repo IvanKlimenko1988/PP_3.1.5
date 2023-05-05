@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dto.UserDTO;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
@@ -39,6 +40,10 @@ public class AdminsRestController {
     public List<UserDTO> getUsers() {
         return userService.findAll().stream().map(this::convertToUserDTO)
                 .collect(Collectors.toList());
+    }
+    @GetMapping("/roles")
+    public List<Role> getRoles() {
+        return roleService.getAllRoles();
     }
 
     @GetMapping("/users/{id}")
