@@ -14,17 +14,17 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-@Controller
-@RequestMapping("/user")
+//@Controller
+//@RequestMapping("/user")
 public class UsersController {
     private final UserService userService;
 
-    @Autowired
+//    @Autowired
     public UsersController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
+//    @GetMapping()
     public String showUser(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetailsImp = (UserDetailsImpl) authentication.getPrincipal();
@@ -33,13 +33,13 @@ public class UsersController {
         return "/user";
     }
 
-    @GetMapping("/test")
+//    @GetMapping("/test")
     public String showUserTest(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetailsImp = (UserDetailsImpl) authentication.getPrincipal();
         User user = userDetailsImp.getUser();
         model.addAttribute("user", user);
-        return "/test";
+        return "user";
     }
 
 }

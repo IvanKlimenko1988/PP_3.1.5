@@ -15,6 +15,7 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,53 +37,96 @@ public class AdminsRestController {
         this.modelMapper = modelMapper;
     }
 
+//    @GetMapping("/users")
+//    public List<UserDTO> getUsers() {
+//        return userService.findAll().stream().map(this::convertToUserDTO)
+//                .collect(Collectors.toList());
+//    }
+//    @GetMapping("/roles")
+//    public List<Role> getRoles() {
+//        return roleService.getAllRoles();
+//    }
+//
+//    @GetMapping("/users/{id}")
+//    public UserDTO getUserByID(@PathVariable("id") long id) {
+//        return convertToUserDTO(userService.findById(id)) ;
+//    }
+//
+//    @PostMapping("/users")
+//    public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid UserDTO userDTO,
+//                                                 BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            StringBuilder errorMsg = new StringBuilder();
+//
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            for(FieldError error : errors) {
+//                errorMsg.append(error.getField())
+//                        .append(" - ").append(error.getDefaultMessage())
+//                        .append(";");
+//            }
+//            throw new UserNotFoundException(errorMsg.toString());
+//        }
+//        userService.addUser(convertToUser(userDTO));
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
+
+
+
+//    @PutMapping("/users")
+//    public User updateUser(@RequestBody User user) {
+//        userService.updateUser(user);
+//        return user;
+//    }
+
+
+//    @DeleteMapping("/users/{id}")
+//    public String deleteUser(@PathVariable("id") long id) {
+//        userService.deleteUser(id);
+//        return "DELETE FINISHED";
+//    }
+/////////////////////////////////
     @GetMapping("/users")
-    public List<UserDTO> getUsers() {
-        return userService.findAll().stream().map(this::convertToUserDTO)
-                .collect(Collectors.toList());
-    }
-    @GetMapping("/roles")
-    public List<Role> getRoles() {
-        return roleService.getAllRoles();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("/users/{id}")
-    public UserDTO getUserByID(@PathVariable("id") long id) {
-        return convertToUserDTO(userService.findById(id)) ;
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable("id") long id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/users")
-    public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid UserDTO userDTO,
-                                                 BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMsg = new StringBuilder();
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        userService.addUser(user);
+        return ResponseEntity.ok(user);
+    }
 
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for(FieldError error : errors) {
-                errorMsg.append(error.getField())
-                        .append(" - ").append(error.getDefaultMessage())
-                        .append(";");
-            }
-            throw new UserNotFoundException(errorMsg.toString());
-        }
-        userService.addUser(convertToUser(userDTO));
+    @PatchMapping
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
+        userService.updateUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
-
-    @PutMapping("/users")
-    public User updateUser(@RequestBody User user) {
-        userService.updateUser(user);
-        return user;
-    }
-
-
-    @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable("id") long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
-        return "DELETE FINISHED";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
+    //таблица юзера после аунтификации
+    @GetMapping("/currentUser")
+    public ResponseEntity<User> getCurrentUser(Principal principal) {
+        User user = userService.findUserByName(principal.getName());
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    //роли
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return ResponseEntity.ok(roleService.getAllRoles());
+    }
+
+
+
 
     private User convertToUser(UserDTO userDTO) {
         return modelMapper.map(userDTO, User.class);

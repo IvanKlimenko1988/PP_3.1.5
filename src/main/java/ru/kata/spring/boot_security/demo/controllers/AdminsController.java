@@ -12,21 +12,21 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 import java.security.Principal;
 import java.util.List;
 
-@Controller
-@RequestMapping("/admin")
+//@Controller
+//@RequestMapping("/admin")
 public class AdminsController {
 
     private final UserService userService;
 
     private final RoleService roleService;
 
-    @Autowired
+//    @Autowired
     public AdminsController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-    @GetMapping("")
+//    @GetMapping("")
     public String getAdminPage(Model model, Principal principal) {
         List<Role> listRoles = roleService.getAllRoles();
         model.addAttribute("listRoles", listRoles);
@@ -37,13 +37,13 @@ public class AdminsController {
         return "admin";
     }
 
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String createUser(@ModelAttribute("user") User user) {
         userService.addUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/delete/{id}")
+//    @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
