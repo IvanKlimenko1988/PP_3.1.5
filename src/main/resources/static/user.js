@@ -1,4 +1,4 @@
-const urlUser = "/admin/currentUser/"
+const urlUser = "/user/currentUser/"
 
 const userInfo = document.querySelector('tbody')
 

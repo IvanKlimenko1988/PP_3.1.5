@@ -23,4 +23,10 @@ public class RoleServiseImpl implements RoleService {
         return roleRepository.findAll();
     }
 
+    @Override
+    @Transactional
+    public void addRole(Role role) {
+        roleRepository.save(role);
+    }
+
 }
