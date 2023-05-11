@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
-import ru.kata.spring.boot_security.demo.util.UserErrorResponse;
-import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,13 +48,6 @@ public class UserServiceImpl implements UserService {
         return user.orElseThrow();
     }
 
-//    @Override
-//    @Transactional
-//    public void deleteUser(Long id) {
-//        if (userRepository.findById(id).isPresent()) {
-//            userRepository.deleteById(id);
-//        }
-//    }
 
     @Override
     @Transactional

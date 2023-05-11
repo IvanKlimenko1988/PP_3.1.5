@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.dto.UserDTO;
+//import ru.kata.spring.boot_security.demo.dto.UserDTO;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/admin")
 public class AdminsRestController {
 
     private final UserService userService;
 
-    private final ModelMapper modelMapper;
+//    private final ModelMapper modelMapper;
 
 
     private final RoleService roleService;
@@ -34,7 +34,7 @@ public class AdminsRestController {
     public AdminsRestController(UserService userService, RoleService roleService, ModelMapper modelMapper) {
         this.userService = userService;
         this.roleService = roleService;
-        this.modelMapper = modelMapper;
+//        this.modelMapper = modelMapper;
     }
 
 //    @GetMapping("/users")
@@ -71,7 +71,6 @@ public class AdminsRestController {
 //    }
 
 
-
 //    @PutMapping("/users")
 //    public User updateUser(@RequestBody User user) {
 //        userService.updateUser(user);
@@ -79,7 +78,7 @@ public class AdminsRestController {
 //    }
 
 
-//    @DeleteMapping("/users/{id}")
+    //    @DeleteMapping("/users/{id}")
 //    public String deleteUser(@PathVariable("id") long id) {
 //        userService.deleteUser(id);
 //        return "DELETE FINISHED";
@@ -90,7 +89,7 @@ public class AdminsRestController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         User user = userService.findById(id);
         return ResponseEntity.ok(user);
@@ -102,38 +101,40 @@ public class AdminsRestController {
         return ResponseEntity.ok(user);
     }
 
-    @PatchMapping
+    @PatchMapping(value = "/users/{id}")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
         userService.updateUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/users/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
     //таблица юзера после аунтификации
     @GetMapping("/currentUser")
     public ResponseEntity<User> getCurrentUser(Principal principal) {
         User user = userService.findUserByName(principal.getName());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
     //роли
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> getAllRoles() {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
-
-
-
-
-    private User convertToUser(UserDTO userDTO) {
-        return modelMapper.map(userDTO, User.class);
-    }
-
-    private UserDTO convertToUserDTO(User user) {
-        return modelMapper.map(user, UserDTO.class);
-    }
-
 }
+
+
+
+//    private User convertToUser(UserDTO userDTO) {
+//        return modelMapper.map(userDTO, User.class);
+//    }
+
+//    private UserDTO convertToUserDTO(User user) {
+//        return modelMapper.map(user, UserDTO.class);
+//    }
+//
+//}

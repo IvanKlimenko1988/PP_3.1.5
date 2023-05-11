@@ -4,7 +4,7 @@ package ru.kata.spring.boot_security.demo.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
-import java.util.Set;
+
 
 
 @Entity
@@ -17,9 +17,6 @@ public class Role {
     @Column(name = "name")
     @NotEmpty
     private String name;
-//    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-//    private Set<User> users;
-
 
     public Role() {
     }

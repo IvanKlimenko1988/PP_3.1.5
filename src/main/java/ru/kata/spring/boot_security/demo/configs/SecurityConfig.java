@@ -61,15 +61,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/auth/login");
     }
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.httpBasic()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/users/**").hasRole("USER")
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .and()
-//                .csrf().disable()
-//                .formLogin().disable();
-//    }
+
 }

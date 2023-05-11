@@ -9,12 +9,6 @@ import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
 @ControllerAdvice
 public class UserGlobalExceptionHandler {
-//    @ExceptionHandler
-//    public ResponseEntity<UserErrorResponse> handlerException(NoSuchUserException e) {
-//        UserErrorResponse data = new UserErrorResponse();
-//        data.setInfo(e.getMessage());
-//        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
-//    }
 
     @ExceptionHandler
     public ResponseEntity<UserErrorResponse> handlerException(Exception e) {
